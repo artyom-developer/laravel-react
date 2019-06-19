@@ -61701,9 +61701,9 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
 
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
@@ -61723,36 +61723,204 @@ function (_Component) {
 
     _classCallCheck(this, Producto);
 
+    // variables
     _this = _possibleConstructorReturn(this, _getPrototypeOf(Producto).call(this, props));
     _this.state = {
-      producto: []
+      producto: [],
+      productoBackup: [],
+      textBuscar: '',
+      formNombre: '',
+      formDescripcion: '',
+      formPrecio: '' // funciones de onchange de los campos en el formulario
+
     };
+    _this.handleChangeNombre = _this.handleChangeNombre.bind(_assertThisInitialized(_this));
+    _this.handleChangeDescp = _this.handleChangeDescp.bind(_assertThisInitialized(_this));
+    _this.handleChangePreci = _this.handleChangePreci.bind(_assertThisInitialized(_this));
     return _this;
   }
 
   _createClass(Producto, [{
     key: "componentDidMount",
     value: function componentDidMount() {
+      this.loadDataProduct();
+    }
+  }, {
+    key: "loadDataProduct",
+    value: function loadDataProduct() {
       var _this2 = this;
 
       axios.get(baseUrl + 'api/producto/list').then(function (response) {
         _this2.setState({
-          producto: response.data
+          producto: response.data,
+          productoBackup: response.data
         });
       })["catch"](function (error) {
         alert("Error " + error);
       });
     }
   }, {
+    key: "filter",
+    value: function filter(event) {
+      console.log(event.target.value); // obtener datos de buscar
+
+      var text = event.target.value; // obtener datos de array
+
+      var data = this.state.productoBackup;
+      var newData = data.filter(function (item) {
+        // variable de titulo
+        var itemDataTitulo = item.titulo.toUpperCase(); // variable de descripcion
+
+        var itemDataDescp = item.descripcion.toUpperCase(); // juntarlos de titulo y descripcion
+
+        var itemData = itemDataTitulo + " " + itemDataDescp; // variable de buscar
+
+        var textData = text.toUpperCase(); // filtrar su es verdadero o no y lo devuelve
+
+        return itemData.indexOf(textData) > -1;
+      });
+      this.setState({
+        producto: newData
+      });
+    } // campo de nombre
+
+  }, {
+    key: "handleChangeNombre",
+    value: function handleChangeNombre(event) {
+      this.setState({
+        formNombre: event.target.value
+      });
+    } //campo de descripcion
+
+  }, {
+    key: "handleChangeDescp",
+    value: function handleChangeDescp(event) {
+      this.setState({
+        formDescripcion: event.target.value
+      });
+    } // campo de precio
+
+  }, {
+    key: "handleChangePreci",
+    value: function handleChangePreci(event) {
+      this.setState({
+        formPrecio: event.target.value
+      });
+    }
+  }, {
     key: "render",
     value: function render() {
+      var _this3 = this;
+
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         "class": "container"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h3", null, "Laravel y React APIRest"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("hr", null), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("table", {
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h3", null, "Laravel y ReactJS"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("hr", null), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        "class": "row"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+        "class": "form-control col-md-8",
+        placeholder: "Buscar...",
+        value: this.state.text,
+        onChange: function onChange(text) {
+          return _this3.filter(text);
+        }
+      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+        type: "button",
+        "class": "btn btn-primary col-md-4",
+        "data-toggle": "modal",
+        "data-target": "#exampleModal"
+      }, "Crear producto")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("hr", null), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("table", {
         "class": "table table-bordered order-table "
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("thead", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tr", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Producto"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Descripcion"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Precio"))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tbody", {
         id: "bodytable"
-      }, this.listData())));
+      }, this.listData())), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        ref: "putomodal",
+        "class": "modal fade",
+        id: "exampleModal",
+        tabindex: "-1",
+        role: "dialog",
+        "aria-labelledby": "exampleModalLabel",
+        "aria-hidden": "true"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        "class": "modal-dialog",
+        role: "document"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        "class": "modal-content"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        "class": "modal-header"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h5", {
+        "class": "modal-title",
+        id: "exampleModalLabel"
+      }, "Formulario de producto"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+        type: "button",
+        "class": "close",
+        "data-dismiss": "modal",
+        "aria-label": "Close"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+        "aria-hidden": "true"
+      }, "\xD7"))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        "class": "modal-body"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        "class": "form-group"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", {
+        "for": "exampleInputEmail1"
+      }, "Nombre de producto "), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+        type: "text",
+        "class": "form-control",
+        value: this.state.formNombre,
+        onChange: this.handleChangeNombre
+      })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        "class": "form-group"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", {
+        "for": "exampleInputEmail1"
+      }, "Descripcion de producto"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("textarea", {
+        "class": "form-control",
+        rows: "3",
+        value: this.state.formDescripcion,
+        onChange: this.handleChangeDescp
+      })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        "class": "form-group"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", {
+        "for": "exampleInputEmail1"
+      }, "Precio"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+        type: "number",
+        "class": "form-control",
+        value: this.state.formPrecio,
+        onChange: this.handleChangePreci
+      }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        "class": "modal-footer"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+        type: "button",
+        "class": "btn btn-secondary",
+        "data-dismiss": "modal"
+      }, "Cancelar"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+        type: "button",
+        "class": "btn btn-primary",
+        onClick: function onClick() {
+          return _this3.sendNetworkProduct();
+        }
+      }, "Guardar")))))));
+    }
+  }, {
+    key: "sendNetworkProduct",
+    value: function sendNetworkProduct() {
+      var _this4 = this;
+
+      var formData = new FormData();
+      formData.append('nombre', this.state.formNombre);
+      formData.append('descripcion', this.state.formDescripcion);
+      formData.append('precio', this.state.formPrecio);
+      axios.post(baseUrl + 'api/producto/create', formData).then(function (response) {
+        if (response.data.success == true) {
+          alert(response.data.message); // para cargar datos de nuevo
+
+          _this4.loadDataProduct(); // para cerrar el modal
+
+
+          $("#exampleModal").modal("hide");
+        }
+      })["catch"](function (error) {
+        alert("Error " + error);
+      });
     }
   }, {
     key: "listData",

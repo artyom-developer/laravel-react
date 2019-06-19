@@ -18,3 +18,5 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::get('producto/list','API\ControllerProduct@get_all');
+// crear producto
+Route::post('producto/create','API\ControllerProduct@create');
