@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Producto;
+Use Log;
 
 class ControllerProduct extends Controller
 {
@@ -26,6 +27,35 @@ class ControllerProduct extends Controller
 
       // respesta de JSON
       $response['message'] = "Guardo exitosamente";
+      $response['success'] = true;
+
+      return $response;
+    }
+
+    public function update(Request $request){
+
+      // inserta los datos
+      Producto::where('id',$request->input('id'))->
+      update([
+        'titulo' => $request->input('nombre'),
+        'descripcion' => $request->input('descripcion'),
+        'precio' => $request->input('precio')
+      ]);
+
+      // respesta de JSON
+      $response['message'] = "Actualizo exitosamente";
+      $response['success'] = true;
+
+      return $response;
+
+    }
+
+    public function delete(Request $request){
+
+      // Eliminar
+      Producto::where('id',$request->input('id'))->delete();
+      // respesta de JSON
+      $response['message'] = "Elimino exitosamente";
       $response['success'] = true;
 
       return $response;

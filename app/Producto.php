@@ -11,4 +11,7 @@ class Producto extends Model
 
     protected $fillable=['id','titulo', 'descripcion', 'precio', 'cantidad' ];
 
+    // guardar sin created_at u updated_at
+    public $timestamps = false;
+
 }

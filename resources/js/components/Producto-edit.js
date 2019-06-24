@@ -113,29 +113,6 @@ export default class Producto extends Component {
               </tbody>
             </table>
 
-            <div class="modal fade" id="exampleModalDelete" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-              <div class="modal-dialog" role="document">
-
-                <div class="modal-content">
-
-                  <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Eliminar</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                      <span aria-hidden="true">×</span>
-                    </button>
-                  </div>
-                  <div class="modal-body">
-                    <p>Esta seguro desea de eliminar un regsitro?</p>
-                  </div>
-                  <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-primary" onClick={()=>this.sendNetworkDelete()}>Eliminar</button>
-                  </div>
-                </div>
-
-              </div>
-            </div>
-
 
             <form>
             <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -179,12 +156,6 @@ export default class Producto extends Component {
 
           </div>
         );
-    }
-
-    showModalDelete(data){ 
-      // id seleccionado para eliminar
-      this.setState({ idProducto:data.id })
-      $("#exampleModalDelete").modal("show");
     }
 
     showModalEdit(data){
@@ -233,27 +204,6 @@ export default class Producto extends Component {
 
     }
 
-    sendNetworkDelete(){
-
-      const formData = new FormData()
-      formData.append('id',this.state.idProducto)
-
-      axios.post(baseUrl+'api/producto/delete',formData).then(response=>{
-
-           if (response.data.success==true) {
-             alert(response.data.message)
-             // para cargar datos de nuevo
-             this.loadDataProduct()
-             // para cerrar el modal
-             $("#exampleModalDelete").modal("hide");
-           }
-
-       }).catch(error=>{
-         alert("Error "+error)
-       })
-
-    }
-
     sendNetworkUpdate(){
 
       const formData = new FormData()
@@ -289,7 +239,6 @@ export default class Producto extends Component {
             <td>{data.precio}</td>
             <td>
               <button class="btn btn-info" onClick={()=>this.showModalEdit(data)}>Editar</button>
-              <br/>
               <button class="btn btn-danger" onClick={()=>this.showModalDelete(data)}>Eliminar</button>
             </td>
           </tr>

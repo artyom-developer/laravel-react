@@ -61731,7 +61731,9 @@ function (_Component) {
       textBuscar: '',
       formNombre: '',
       formDescripcion: '',
-      formPrecio: '' // funciones de onchange de los campos en el formulario
+      formPrecio: '',
+      idProducto: 0,
+      edit: false // funciones de onchange de los campos en el formulario
 
     };
     _this.handleChangeNombre = _this.handleChangeNombre.bind(_assertThisInitialized(_this));
@@ -61814,26 +61816,62 @@ function (_Component) {
 
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         "class": "container"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h3", null, "Laravel y ReactJS"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("hr", null), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        "class": "row"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
-        "class": "form-control col-md-8",
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h3", null, "Tutorial CRUD Laravel + React.js"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("hr", null), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+        "class": "form-control col-md-4",
         placeholder: "Buscar...",
         value: this.state.text,
         onChange: function onChange(text) {
           return _this3.filter(text);
         }
-      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
         type: "button",
-        "class": "btn btn-primary col-md-4",
-        "data-toggle": "modal",
-        "data-target": "#exampleModal"
-      }, "Crear producto")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("hr", null), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("table", {
+        "class": "btn btn-primary pull-right",
+        onClick: function onClick() {
+          return _this3.showModalCreate();
+        }
+      }, "Crear producto"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("hr", null), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("table", {
         "class": "table table-bordered order-table "
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("thead", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tr", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Producto"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Descripcion"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Precio"))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tbody", {
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("thead", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tr", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Producto"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Descripcion"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Precio"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Acciones"))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tbody", {
         id: "bodytable"
-      }, this.listData())), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        ref: "putomodal",
+      }, this.listData())), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        "class": "modal fade",
+        id: "exampleModalDelete",
+        tabindex: "-1",
+        role: "dialog",
+        "aria-labelledby": "exampleModalLabel",
+        "aria-hidden": "true"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        "class": "modal-dialog",
+        role: "document"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        "class": "modal-content"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        "class": "modal-header"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h5", {
+        "class": "modal-title",
+        id: "exampleModalLabel"
+      }, "Eliminar"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+        type: "button",
+        "class": "close",
+        "data-dismiss": "modal",
+        "aria-label": "Close"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+        "aria-hidden": "true"
+      }, "\xD7"))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        "class": "modal-body"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, "Esta seguro desea de eliminar un regsitro?")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        "class": "modal-footer"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+        type: "button",
+        "class": "btn btn-secondary",
+        "data-dismiss": "modal"
+      }, "Cancelar"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+        type: "button",
+        "class": "btn btn-primary",
+        onClick: function onClick() {
+          return _this3.sendNetworkDelete();
+        }
+      }, "Eliminar"))))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         "class": "modal fade",
         id: "exampleModal",
         tabindex: "-1",
@@ -61892,13 +61930,53 @@ function (_Component) {
         type: "button",
         "class": "btn btn-secondary",
         "data-dismiss": "modal"
-      }, "Cancelar"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+      }, "Cancelar"), this.state.edit ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+        type: "button",
+        "class": "btn btn-primary",
+        onClick: function onClick() {
+          return _this3.sendNetworkUpdate();
+        }
+      }, "Actualizar") : react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
         type: "button",
         "class": "btn btn-primary",
         onClick: function onClick() {
           return _this3.sendNetworkProduct();
         }
       }, "Guardar")))))));
+    }
+  }, {
+    key: "showModalDelete",
+    value: function showModalDelete(data) {
+      // id seleccionado para eliminar
+      this.setState({
+        idProducto: data.id
+      });
+      $("#exampleModalDelete").modal("show");
+    }
+  }, {
+    key: "showModalEdit",
+    value: function showModalEdit(data) {
+      //alert("mostrar modal "+JSON.stringify(data))
+      this.setState({
+        idProducto: data.id,
+        formNombre: data.titulo,
+        formDescripcion: data.descripcion,
+        formPrecio: data.precio,
+        edit: true
+      });
+      $("#exampleModal").modal("show");
+    }
+  }, {
+    key: "showModalCreate",
+    value: function showModalCreate() {
+      this.setState({
+        idProducto: 0,
+        formNombre: "",
+        formDescripcion: "",
+        formPrecio: "",
+        edit: false
+      });
+      $("#exampleModal").modal("show");
     }
   }, {
     key: "sendNetworkProduct",
@@ -61923,10 +62001,65 @@ function (_Component) {
       });
     }
   }, {
+    key: "sendNetworkDelete",
+    value: function sendNetworkDelete() {
+      var _this5 = this;
+
+      var formData = new FormData();
+      formData.append('id', this.state.idProducto);
+      axios.post(baseUrl + 'api/producto/delete', formData).then(function (response) {
+        if (response.data.success == true) {
+          alert(response.data.message); // para cargar datos de nuevo
+
+          _this5.loadDataProduct(); // para cerrar el modal
+
+
+          $("#exampleModalDelete").modal("hide");
+        }
+      })["catch"](function (error) {
+        alert("Error " + error);
+      });
+    }
+  }, {
+    key: "sendNetworkUpdate",
+    value: function sendNetworkUpdate() {
+      var _this6 = this;
+
+      var formData = new FormData();
+      formData.append('id', this.state.idProducto);
+      formData.append('nombre', this.state.formNombre);
+      formData.append('descripcion', this.state.formDescripcion);
+      formData.append('precio', this.state.formPrecio);
+      axios.post(baseUrl + 'api/producto/update', formData).then(function (response) {
+        if (response.data.success == true) {
+          alert(response.data.message); // para cargar datos de nuevo
+
+          _this6.loadDataProduct(); // para cerrar el modal
+
+
+          $("#exampleModal").modal("hide");
+        }
+      })["catch"](function (error) {
+        alert("Error 456" + error);
+      });
+    }
+  }, {
     key: "listData",
     value: function listData() {
+      var _this7 = this;
+
       return this.state.producto.map(function (data) {
-        return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tr", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, data.titulo), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, data.descripcion), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, data.precio));
+        return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tr", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, data.titulo), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, data.descripcion), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, data.precio), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+          "class": "btn btn-info",
+          onClick: function onClick() {
+            return _this7.showModalEdit(data);
+          }
+        }, "Editar"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+          "class": "btn btn-danger",
+          onClick: function onClick() {
+            return _this7.showModalDelete(data);
+          }
+        }, "Eliminar")));
       });
     }
   }]);
